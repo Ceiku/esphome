@@ -9,10 +9,10 @@ static const char *TAG = "ADCP";
 void ADCPComponent::dump_config() { ESP_LOGCONFIG(TAG, "Setting up ADCP..."); }
 
 void ADCPSensor::update() {
-  digitalWrite(this->get_power_pin(), HIGH);
-  delay(this->get_delay());
-  publish_state(this->parent_->get_adc()->get_state());
-  digitalWrite(this->get_power_pin(), LOW);
+  this->power_pin_->digital_write(true);
+  delay(this->delay_);
+  float state = this->parent_->get_source()->sample();
+  this->power_pin_->digital_write(false);
 }
 
 }  // namespace adcp
