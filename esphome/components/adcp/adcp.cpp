@@ -10,8 +10,13 @@ void ADCPComponent::dump_config() { ESP_LOGCONFIG(TAG, "Setting up ADCP..."); }
 
 void ADCPSensor::update() {
   this->power_pin_->digital_write(true);
-  this->read_timestamp_ = millis();
-  this->read_ = true;
+  this->set_timeout(this->delay_, this->complete_update);
+}
+
+void ADCPSensor::complete_update() {
+  float state = this->parent_->get_source()->sample();
+  this->power_pin_->digital_write(false);
+  this->publish_state(state);
 }
 
 void ADCPSensor::loop() {

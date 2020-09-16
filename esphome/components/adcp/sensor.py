@@ -16,7 +16,7 @@ CONFIG_SCHEMA = sensor.sensor_schema(UNIT_VOLT, ICON_FLASH, 3).extend({
     cv.GenerateID(): cv.declare_id(ADCPSensor),
     cv.GenerateID(CONF_ADCP_ID): cv.use_id(ADCPComponent),
     cv.Required(CONF_PIN): pins.gpio_output_pin_schema,
-    cv.Optional(CONF_DELAY, default='100ms'): cv.positive_time_period_milliseconds,
+    cv.Optional(CONF_DELAY, default='30ms'): cv.positive_time_period_milliseconds,
 }).extend(cv.polling_component_schema('60s'))
 
 
