@@ -39,6 +39,5 @@ class ADCPSensor : public sensor::Sensor, public PollingComponent {
   uint8_t delay_;
 };
 
-
 }  // namespace adcp
 }  // namespace esphome
