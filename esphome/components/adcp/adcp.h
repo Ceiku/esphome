@@ -32,6 +32,7 @@ class ADCPSensor : public sensor::Sensor, public PollingComponent {
   uint8_t get_delay() const { return this->delay_; }
 
   void update() override;
+  void loop() override;
 
  protected:
   ADCPComponent *parent_;
