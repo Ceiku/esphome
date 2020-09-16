@@ -19,13 +19,5 @@ void ADCPSensor::complete_update() {
   this->publish_state(state);
 }
 
-void ADCPSensor::loop() {
-  if (this->read_ && millis() > this->read_timestamp_ + this->delay_) {
-    float state = this->parent_->get_source()->sample();
-    this->power_pin_->digital_write(false);
-    this->publish_state(state);
-    this->read_ = false;
-  }
-}
 }  // namespace adcp
 }  // namespace esphome
