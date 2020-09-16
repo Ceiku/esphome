@@ -38,6 +38,8 @@ class ADCPSensor : public sensor::Sensor, public PollingComponent {
   ADCPComponent *parent_;
   GPIOPin *power_pin_;
   uint8_t delay_;
+  uint32_t read_timestamp_{0};
+  bool read_{false};
 };
 
 }  // namespace adcp
