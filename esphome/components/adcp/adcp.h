@@ -15,7 +15,7 @@ class ADCPComponent : public Component {
   void dump_config() override;
 
   void set_source(voltage_sampler::VoltageSampler *source) { source_ = source; }
-  voltage_sampler::VoltageSampler* get_source() { return this->source_; }
+  voltage_sampler::VoltageSampler *get_source() { return this->source_; }
 
   float get_setup_priority() const override { return setup_priority::DATA; }
 

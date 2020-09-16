@@ -13,6 +13,7 @@ void ADCPSensor::update() {
   delay(this->delay_);
   float state = this->parent_->get_source()->sample();
   this->power_pin_->digital_write(false);
+  this->publish_state(state);
 }
 
 }  // namespace adcp
