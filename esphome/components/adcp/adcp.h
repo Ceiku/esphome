@@ -13,11 +13,10 @@ class ADCPSensor;
 class ADCPComponent : public Component {
  public:
   void dump_config() override;
+  float get_setup_priority() const override { return setup_priority::DATA; }
 
   void set_source(voltage_sampler::VoltageSampler *source) { source_ = source; }
   voltage_sampler::VoltageSampler *get_source() { return this->source_; }
-
-  float get_setup_priority() const override { return setup_priority::DATA; }
 
  protected:
   voltage_sampler::VoltageSampler *source_;
@@ -33,6 +32,7 @@ class ADCPSensor : public sensor::Sensor, public PollingComponent {
 
  protected:
   void complete_update_();
+
   ADCPComponent *parent_;
   GPIOPin *power_pin_;
   uint8_t delay_;
