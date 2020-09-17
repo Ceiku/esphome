@@ -33,7 +33,6 @@ class ADCPSensor : public sensor::Sensor, public PollingComponent {
 
  protected:
   void complete_update_();
-  
   ADCPComponent *parent_;
   GPIOPin *power_pin_;
   uint8_t delay_;
