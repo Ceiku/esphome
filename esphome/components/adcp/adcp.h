@@ -29,7 +29,6 @@ class ADCPSensor : public sensor::Sensor, public PollingComponent {
   void set_power_pin(GPIOPin *power_pin) { this->power_pin_ = power_pin; }
   void set_delay(uint8_t delay) { this->delay_ = delay; }
   uint8_t get_delay() const { return this->delay_; }
-  
   void update() override;
 
  protected:
