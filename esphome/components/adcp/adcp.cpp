@@ -10,7 +10,12 @@ void ADCPComponent::dump_config() { ESP_LOGCONFIG(TAG, "Setting up ADCP..."); }
 
 void ADCPSensor::update() {
   this->power_pin_->digital_write(true);
-  this->set_timeout((uint32_t) this->delay_, [this]() { this->complete_update_(); });
+  this->set_timeout(this->delay_, [this]() { this->complete_update_(); });
+}
+
+void ADCPSensor::set_power_pin(GPIOPin *power_pin) {
+  this->power_pin_ = power_pin;
+  this->power_pin_->setup(); 
 }
 
 void ADCPSensor::complete_update_() {

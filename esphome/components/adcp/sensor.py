@@ -28,5 +28,4 @@ def to_code(config):
 
     power_pin = yield cg.gpio_pin_expression(config[CONF_PIN])
     cg.add(var.set_power_pin(power_pin))
-
     cg.add(var.set_delay(config[CONF_DELAY]))
