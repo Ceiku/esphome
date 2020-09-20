@@ -15,7 +15,7 @@ void ADCPSensor::update() {
 
 void ADCPSensor::set_power_pin(GPIOPin *power_pin) {
   this->power_pin_ = power_pin;
-  this->power_pin_->setup(); 
+  this->power_pin_->setup();
 }
 
 void ADCPSensor::complete_update_() {
