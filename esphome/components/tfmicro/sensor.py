@@ -1,12 +1,10 @@
 import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome.components import sensor
-from esphome.const import CONF_SENSOR, CONF_ID, UNIT_VOLT, ICON_FLASH, ESP_PLATFORM_ESP32
+from esphome.const import CONF_SENSOR, CONF_ID, UNIT_PERCENT, ICON_BRAIN, ESP_PLATFORM_ESP32
 
-# DEPENDENCIES = ['sensor']
-# ESP_PLATFORMS = [ESP_PLATFORM_ESP32]
+ESP_PLATFORMS = [ESP_PLATFORM_ESP32]
 
-# MULTI_CONF = True
 IS_PLATFORM_COMPONENT = True
 
 CONF_INPUT_SIZE = 'input_size'
@@ -17,7 +15,7 @@ CONF_RESOLVERS = 'resolvers'
 tfmicro_ns = cg.esphome_ns.namespace('tfmicro')
 TFMicroSensor = tfmicro_ns.class_('TFMicroSensor', sensor.Sensor, cg.PollingComponent)
 
-CONFIG_SCHEMA = sensor.sensor_schema(UNIT_VOLT, ICON_FLASH, 3).extend({
+CONFIG_SCHEMA = sensor.sensor_schema(UNIT_PERCENT, ICON_BRAIN, 3).extend({
     cv.GenerateID(): cv.declare_id(TFMicroSensor),
     cv.Required(CONF_SENSOR): cv.use_id(sensor.Sensor),
     cv.Required(CONF_MODEL): cv.ensure_list(cv.hex_uint8_t),
