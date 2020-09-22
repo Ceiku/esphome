@@ -1,0 +1,11 @@
+## See instructions in .env.sample to autofill 
+version: '3'
+services:
+  esphome_t:
+    build: .
+    container_name: esphome_test
+    volumes:
+      - /home/astro/dev/esphome/config:/config
+    ports:
+      - 7052:6052
+      - 7053:6053

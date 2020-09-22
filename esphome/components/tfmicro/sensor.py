@@ -1,8 +1,9 @@
 import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome.components import sensor
-from esphome.const import CONF_SENSOR, CONF_ID, UNIT_PERCENT, ICON_BRAIN, ESP_PLATFORM_ESP32
+from esphome.const import CONF_SENSOR, CONF_ID, UNIT_PERCENT, ICON_BRAIN, ESP_PLATFORM_ESP32, CONF_MODEL
 
+DEPENDENCIES = ['sensor']
 ESP_PLATFORMS = [ESP_PLATFORM_ESP32]
 
 IS_PLATFORM_COMPONENT = True
