@@ -17,25 +17,26 @@ CONF_RESOLVERS = 'resolvers'
 tfmicro_ns = cg.esphome_ns.namespace('tfmicro')
 TFMicroSensor = tfmicro_ns.class_('TFMicroSensor', sensor.Sensor, cg.PollingComponent)
 
-
-# def validate_data(value):
-#     if isinstance(value, text_type):
-#         return value.encode('utf-8')
-#     if isinstance(value, str):
-#         return value
-#     if isinstance(value, list):
-#         return cv.Schema([cv.char])(value)
-#     raise cv.Invalid("data must either be a string wrapped in quotes or a list of bytes")
+def validate_raw_data(value):
+  if isinstance(value, str):
+      return value.encode('utf-8')
+  if isinstance(value, str):
+      return value
+  if isinstance(value, list):
+      return cv.Schema([cv.hex_uint8_t])(value)
+  raise cv.Invalid("data must either be a string wrapped in quotes or a list of bytes")
 
 CONFIG_SCHEMA = sensor.sensor_schema(UNIT_PERCENT, ICON_BRAIN, 3).extend({
     cv.GenerateID(): cv.declare_id(TFMicroSensor),
     cv.Required(CONF_SENSOR): cv.use_id(sensor.Sensor),
-    cv.Required(CONF_MODEL):  cv.ensure_list(cv.All(cv.unsigned, cv.char)),
+    cv.Required(CONF_MODEL): validate_raw_data, # cv.Schema([cv.hex_uint8_t])(value), # cv.ensure_list(cv.hex_uint8_t),
     cv.Optional(CONF_RESOLVERS, default='all'): cv.ensure_list(cv.string_strict),
     cv.Optional(CONF_INPUT_SIZE, default=1): cv.All(cv.uint8_t, cv.positive_not_null_int),
     cv.Optional(CONF_OUTPUT_SIZE, default=1): cv.All(cv.uint8_t, cv.positive_not_null_int),
     cv.Optional(CONF_TENSOR_ARENA_SIZE, default=2048): cv.All(cv.uint8_t, cv.positive_not_null_int),
 }).extend(cv.polling_component_schema('60s'))
+
+#validate_raw_data, #cv.ensure_list(cv.validate_bytes),
 
 def to_code(config):
   template = cg.TemplateArguments(config[CONF_INPUT_SIZE], config[CONF_OUTPUT_SIZE], config[CONF_TENSOR_ARENA_SIZE])
@@ -49,10 +50,7 @@ def to_code(config):
 
   sens = yield cg.get_variable(config[CONF_SENSOR])
 
-  model = config[CONF_MODEL]
-    # if isinstance(model, binary_type):
-    #     data = [HexInt(char_to_byte(x)) for x in data]
-    # cg.add(var.set_data(model))
+  # model = config[CONF_MODEL]
   
   cg.add(var.set_sensor(sens))
   cg.add(var.set_resolvers(config[CONF_RESOLVERS]))
