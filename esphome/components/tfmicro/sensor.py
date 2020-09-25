@@ -2,7 +2,6 @@ import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome.components import sensor
 from esphome.const import CONF_SENSOR, CONF_ID, UNIT_PERCENT, ICON_BRAIN, ESP_PLATFORM_ESP32, CONF_MODEL
-# from esphome.py_compat import text_type, binary_type, char_to_byte
 
 DEPENDENCIES = ['sensor']
 ESP_PLATFORMS = [ESP_PLATFORM_ESP32]
@@ -17,26 +16,15 @@ CONF_RESOLVERS = 'resolvers'
 tfmicro_ns = cg.esphome_ns.namespace('tfmicro')
 TFMicroSensor = tfmicro_ns.class_('TFMicroSensor', sensor.Sensor, cg.PollingComponent)
 
-def validate_raw_data(value):
-  if isinstance(value, str):
-      return value.encode('utf-8')
-  if isinstance(value, str):
-      return value
-  if isinstance(value, list):
-      return cv.Schema([cv.hex_uint8_t])(value)
-  raise cv.Invalid("data must either be a string wrapped in quotes or a list of bytes")
-
 CONFIG_SCHEMA = sensor.sensor_schema(UNIT_PERCENT, ICON_BRAIN, 3).extend({
     cv.GenerateID(): cv.declare_id(TFMicroSensor),
     cv.Required(CONF_SENSOR): cv.use_id(sensor.Sensor),
-    cv.Required(CONF_MODEL): validate_raw_data, # cv.Schema([cv.hex_uint8_t])(value), # cv.ensure_list(cv.hex_uint8_t),
+    cv.Required(CONF_MODEL): cv.Schema([cv.hex_uint8_t]),
     cv.Optional(CONF_RESOLVERS, default='all'): cv.ensure_list(cv.string_strict),
     cv.Optional(CONF_INPUT_SIZE, default=1): cv.All(cv.uint8_t, cv.positive_not_null_int),
     cv.Optional(CONF_OUTPUT_SIZE, default=1): cv.All(cv.uint8_t, cv.positive_not_null_int),
-    cv.Optional(CONF_TENSOR_ARENA_SIZE, default=2048): cv.All(cv.uint8_t, cv.positive_not_null_int),
+    cv.Optional(CONF_TENSOR_ARENA_SIZE, default=2048): cv.positive_not_null_int,
 }).extend(cv.polling_component_schema('60s'))
-
-#validate_raw_data, #cv.ensure_list(cv.validate_bytes),
 
 def to_code(config):
   template = cg.TemplateArguments(config[CONF_INPUT_SIZE], config[CONF_OUTPUT_SIZE], config[CONF_TENSOR_ARENA_SIZE])
@@ -50,7 +38,7 @@ def to_code(config):
 
   sens = yield cg.get_variable(config[CONF_SENSOR])
 
-  # model = config[CONF_MODEL]
+  cg.add(var.set_model(config[CONF_MODEL]))
   
   cg.add(var.set_sensor(sens))
   cg.add(var.set_resolvers(config[CONF_RESOLVERS]))
